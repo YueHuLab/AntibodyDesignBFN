@@ -1,0 +1,10 @@
+model:
+  checkpoint: /Users/huyue/diffabBFN2026/diffab-main_cursor/logs/bfn_seq_design_2026_01_05__12_53_41_seq_design_v1/checkpoints/best.pt
+
+sampling:
+  seed: 42
+  transform:
+  - type: mask_single_cdr
+    selection: H_CDR3
+    augmentation: false
+  - type: merge_chains

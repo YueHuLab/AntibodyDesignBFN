@@ -1,0 +1,18 @@
+# Systematic Testing Configuration for BFN Antibody Design
+# Uses structures from 2024+ (not in training data)
+
+model:
+  checkpoint: ./logs/bfn_seq_design_2026_01_05__12_53_41_seq_design_v1/checkpoints/best.pt
+
+sampling:
+  seed: 2022
+  # Deterministic sampling for reproducibility
+  deterministic: true
+  # Evaluate all 6 CDRs
+  cdrs:
+    - H_CDR1
+    - H_CDR2
+    - H_CDR3
+    - L_CDR1
+    - L_CDR2
+    - L_CDR3
