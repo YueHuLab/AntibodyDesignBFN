@@ -1,10 +1,10 @@
- AntibodyDesignBFN
+# AntibodyDesignBFN
 **AntibodyDesignBFN** is a robust framework for fixed-backbone antibody sequence design based on **Bayesian Flow Networks (BFN)**. It leverages **Geometric Transformers** with **Invariant Point Attention (IPA)** to model the joint distribution of sequence and structure (or sequence conditioned on structure) in a continuous-time generative process.
 ## Features
 - **Fixed-Backbone Design**: Efficiently design CDR sequences for a given antibody backbone structure.
 - **Bayesian Flow Networks**: accurate, iterative refinement of discrete sequences.
 - **Geometric Transformer**: E(3)-invariant architecture capturing precise side-chain packing and geometric constraints.
-- **Low Compute**: Trainable on consumer hardware (e.g., NVIDIA RTX 4090).
+- **Low Compute**: Optimized for Apple Silicon (tested on **Mac Mini M4**).
 ## Installation
 ### Prerequisites
 - Python 3.8+
@@ -17,6 +17,11 @@ cd AntibodyDesignBFN
 pip install -e .
 ```
 This will install `antibody_bfn` and necessary dependencies (`torch`, `biopython`, `lmdb`, etc.).
+## Training Data
+The model is trained on the **Structural Antibody Database (SAbDab)**.
+- **Summary File**: `./data/sabdab_summary_all.tsv`
+- **Structure Directory**: `./data/all_structures/chothia`
+- **Processing**: The model automatically preprocesses PDB files into an LMDB cache for efficient training.
 ## Usage
 ### 1. Sequence Design (Inference)
 To design sequences for a target antibody structure (PDB file), use `design_seq.py`.
