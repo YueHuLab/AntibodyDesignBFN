@@ -1,0 +1,67 @@
+# BFN Sequence Design Training (Finetuning)
+# Finetune from best checkpoint with lower LR (1e-4)
+# Stabilize training after 10k steps
+
+model:
+  type: antibody_bfn
+  res_feat_dim: 256
+  pair_feat_dim: 128
+  diffusion:
+    num_steps: 20
+    beta: 1.0
+    schedule: cosine
+    eps_net_opt:
+      num_layers: 6
+  train_structure: true
+  train_sequence: true
+  ot_opt:
+    num_iters: 5
+  loss_weight:
+    seq: 1.0
+    ang_aux: 0.1
+
+train:
+  loss_weights:
+    seq: 1.0
+    ang_aux: 0.1
+  max_iters: 300000
+  val_freq: 50
+  log_freq: 20
+  batch_size: 2
+  warmup_steps: 500  # Reduced warmup for finetuning
+  seed: 2026
+  max_grad_norm: 1.0
+  optimizer:
+    type: adam
+    lr: 1.e-4      # Reduced LR for stability (was 5e-4)
+    weight_decay: 0.0
+    beta1: 0.9
+    beta2: 0.999
+  scheduler:
+    type: plateau
+    factor: 0.5
+    patience: 50
+    min_lr: 1.e-6
+
+dataset:
+  train:
+    type: sabdab
+    summary_path: ./data/sabdab_summary_all.tsv
+    chothia_dir: ./data/all_structures/chothia
+    processed_dir: ./data/processed
+    split: train
+    transform:
+    - type: mask_single_cdr
+    - type: merge_chains
+    - type: patch_around_anchor
+  val:
+    type: sabdab
+    summary_path: ./data/sabdab_summary_all.tsv
+    chothia_dir: ./data/all_structures/chothia
+    processed_dir: ./data/processed
+    split: val
+    transform:
+    - type: mask_single_cdr
+      selection: CDR3
+    - type: merge_chains
+    - type: patch_around_anchor

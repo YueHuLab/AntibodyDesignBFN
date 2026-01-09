@@ -1,0 +1,9 @@
+torch>=2.0.0
+numpy
+tqdm
+biopython
+pyyaml
+easydict
+tensorboard
+scipy
+pandas
