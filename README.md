@@ -17,7 +17,7 @@ cd AntibodyDesignBFN
 pip install -e .
 ```
 This will install `antibody_bfn` and necessary dependencies (`torch`, `biopython`, `lmdb`, etc.).
-## Model Checkpoints
+## Model Checkpoints and test dataset 
 Pre-trained model checkpoints are available on Hugging Face:
 [https://huggingface.co/YueHuLab/AntibodyDesignBFN/](https://huggingface.co/YueHuLab/AntibodyDesignBFN/)
 Please download the checkpoint `.pt` file and update your configuration file (e.g., `configs/demo_design.yml`) to point to the local path.
