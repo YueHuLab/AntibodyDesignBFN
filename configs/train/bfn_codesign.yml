@@ -1,0 +1,19 @@
+mode: single_cdr
+model:
+  checkpoint: ./logs/bfn_full_2026_01_04__18_55_21/checkpoints/19500.pt
+
+sampling:
+  seed: 2022
+  sample_structure: true
+  sample_sequence: true
+  cdrs:
+    - H_CDR2
+  num_samples: 10
+
+dataset:
+  test:
+    type: sabdab
+    summary_path: ./data/sabdab_summary_all.tsv
+    chothia_dir: ./data/all_structures/chothia
+    processed_dir: ./data/processed
+    split: test
