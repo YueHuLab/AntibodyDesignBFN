@@ -1,0 +1,20 @@
+# Inference Configuration using Latest Finetuned Model
+model:
+  checkpoint: ./logs/bfn_seq_design_finetune_2026_01_08__17_54_36_finetune_quick_test/checkpoints/best.pt
+
+sampling:
+  seed: 2022
+  deterministic: true
+  cdrs:
+    - H_CDR1
+    - H_CDR2
+    - H_CDR3
+    - L_CDR1
+    - L_CDR2
+    - L_CDR2
+    - L_CDR3
+  transform:
+    - type: mask_single_cdr
+      selection: H_CDR3
+    - type: merge_chains
+    - type: patch_around_anchor
