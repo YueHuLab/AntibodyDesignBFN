@@ -68,5 +68,23 @@ python train.py configs/train/bfn_seq_design.yml --resume /path/to/checkpoint.pt
 - `configs/`: YAML configuration files for training and testing.
 - `design_seq.py`: Evaluation and inference script.
 - `train.py`: Training script.
+#test dataset
+python batch_evaluate_checkpoints.py \
+  --config configs/test/bfn_testset.yml \
+  --test_set data/2025_testset_43.csv \
+  --chothia_dir data/2025_pdbs \
+  --device mps \
+  --ckpt_dir ./logs/bfn_seq_design_finetune_2026_01_23__16_24_38/checkpoints \
+  --start_ckpt 2400 \
+  --end_ckpt 4100 \
+  --step 25 \
+  --output_base_dir ./results/batch_evaluation_new
+
+
+  python evaluate_testset.py \
+  --config configs/test/bfn_testset.yml \
+  --test_set data/2025_testset_43.csv \
+  --chothia_dir data/2025_pdbs \
+  --device mps
 ## License
 MIT License
