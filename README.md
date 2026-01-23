@@ -87,4 +87,4 @@ python batch_evaluate_checkpoints.py \
   --chothia_dir data/2025_pdbs \
   --device mps
 ## License
-MIT License
+Apache 2.0 License
