@@ -8,25 +8,32 @@ model:
       num_layers: 6
   train_structure: true
   train_sequence: true
-
+  ot_opt:
+    num_iters: 10
+    epsilon: 0.5
 train:
   loss_weights:
-    rot: 0.5
+    rot: 2.0
     pos: 1.0
     seq: 4.0
     ang: 1.0
-    plddt: 1.0
-    iptm: 1.0
+    plddt: 0.01
+    iptm: 0.01
     pae: 0.1
     tm_opt: 1.0
-  max_iters: 200_000
-  val_freq: 1000
-  batch_size: 4
-  seed: 2022
+    dist: 1.0
+    fape: 1.0
+  warmup_steps: 1000
+  max_iters: 100000
+  val_freq: 500
+  log_freq: 100
+  batch_size: 1
+  fixed_t: null # Use random t for real training
+  seed: 2026
   max_grad_norm: 1.0
   optimizer:
     type: adam
-    lr: 1.e-4
+    lr: 2.e-4
     weight_decay: 0.0
     beta1: 0.9
     beta2: 0.999
@@ -38,15 +45,8 @@ train:
 
 dataset:
   train:
-    type: sabdab
-    summary_path: ./data/sabdab_summary_all.tsv
-    chothia_dir: ./data/all_structures/chothia
-    processed_dir: ./data/processed
-    split: train
-    transform:
-    - type: mask_single_cdr
-    - type: merge_chains
-    - type: patch_around_anchor
+    type: lmdb_preprocessed
+    db_path: ./data/preprocessed_bfn/preprocessed_train.lmdb
   val:
     type: sabdab
     summary_path: ./data/sabdab_summary_all.tsv
@@ -55,6 +55,6 @@ dataset:
     split: val
     transform:
     - type: mask_single_cdr
-      selection: CDR3
+      selection: H_CDR3
     - type: merge_chains
     - type: patch_around_anchor

@@ -1,40 +1,47 @@
+# BFN Sequence Design Training (H-CDR3 Specialist Finetune)
+# Finetune from previous resume checkpoint (~8500)
+# Focus exclusively on H-CDR3 to boost performance on this difficult region
+
 model:
   type: antibody_bfn
-  res_feat_dim: 128
-  pair_feat_dim: 64
+  res_feat_dim: 256
+  pair_feat_dim: 128
   diffusion:
-    num_steps: 100
+    num_steps: 20
+    beta: 1.0
+    schedule: cosine
     eps_net_opt:
       num_layers: 6
   train_structure: true
   train_sequence: true
+  ot_opt:
+    num_iters: 5
+  loss_weight:
+    seq: 1.0
+    ang_aux: 0.1
 
 train:
   loss_weights:
-    rot: 0.5
-    pos: 1.0
-    seq: 4.0
-    ang: 1.0
-    plddt: 1.0
-    iptm: 1.0
-    pae: 0.1
-    tm_opt: 1.0
-  max_iters: 200_000
-  val_freq: 1000
-  batch_size: 4
-  seed: 2022
+    seq: 1.0
+    ang_aux: 0.1
+  max_iters: 300000
+  val_freq: 500
+  log_freq: 20
+  batch_size: 2
+  warmup_steps: 500
+  seed: 2026
   max_grad_norm: 1.0
   optimizer:
     type: adam
-    lr: 1.e-4
+    lr: 1.e-4      # Maintain 1e-4 for stable finetuning
     weight_decay: 0.0
     beta1: 0.9
     beta2: 0.999
   scheduler:
     type: plateau
-    factor: 0.8
-    patience: 10
-    min_lr: 5.e-6
+    factor: 0.5
+    patience: 50
+    min_lr: 1.e-6
 
 dataset:
   train:
@@ -45,6 +52,7 @@ dataset:
     split: train
     transform:
     - type: mask_single_cdr
+      selection: H_CDR3   # <--- CRITICAL CHANGE: Focus ONLY on H-CDR3
     - type: merge_chains
     - type: patch_around_anchor
   val:
@@ -55,6 +63,6 @@ dataset:
     split: val
     transform:
     - type: mask_single_cdr
-      selection: CDR3
+      selection: H_CDR3   # Validate on H-CDR3 too
     - type: merge_chains
     - type: patch_around_anchor

@@ -18,17 +18,17 @@ model:
     num_iters: 5
   loss_weight:
     seq: 1.0
-    ang_aux: 0.1
+    ang_aux: 0.000001
 
 train:
   loss_weights:
     seq: 1.0
-    ang_aux: 0.1
+    ang_aux: 0.000001
   max_iters: 300000
-  val_freq: 50
-  log_freq: 20
-  batch_size: 2
-  warmup_steps: 500  # Reduced warmup for finetuning
+  val_freq: 25
+  log_freq: 15
+  batch_size: 16
+  warmup_steps: 75  # Reduced warmup for finetuning
   seed: 2026
   max_grad_norm: 1.0
   optimizer:
@@ -41,14 +41,14 @@ train:
     type: plateau
     factor: 0.5
     patience: 50
-    min_lr: 1.e-6
+    min_lr: 1.e-7
 
 dataset:
   train:
     type: sabdab
-    summary_path: ./data/sabdab_summary_all.tsv
-    chothia_dir: ./data/all_structures/chothia
-    processed_dir: ./data/processed
+    summary_path: /Users/huyue/diffabBFN2026/diffab-main_cursor_back/data/sabdab_summary_all-3angstrom.tsv
+    chothia_dir: /Users/huyue/diffabBFN2026/diffab-main_cursor_back/data/all_structures/chothia
+    processed_dir: /Users/huyue/diffabBFN2026/diffab-main_cursor_back/data/processed3angstrom
     split: train
     transform:
     - type: mask_single_cdr
@@ -56,12 +56,13 @@ dataset:
     - type: patch_around_anchor
   val:
     type: sabdab
-    summary_path: ./data/sabdab_summary_all.tsv
-    chothia_dir: ./data/all_structures/chothia
-    processed_dir: ./data/processed
+    summary_path: /Users/huyue/diffabBFN2026/diffab-main_cursor_back/data/sabdab_summary_all-3angstrom.tsv
+    chothia_dir: /Users/huyue/diffabBFN2026/diffab-main_cursor_back/data/all_structures/chothia
+    processed_dir: /Users/huyue/diffabBFN2026/diffab-main_cursor_back/data/processed3angstrom
+    split: train
     split: val
     transform:
     - type: mask_single_cdr
-      selection: CDR3
+      selection: ['H_CDR2', 'H_CDR3', 'L_CDR3']
     - type: merge_chains
     - type: patch_around_anchor
